@@ -1,4 +1,12 @@
-# todo-list
+# draggable Todo App
+
+## technologies
+
+* vue
+* vuex
+* vuedraggable
+* localStorage
+
 
 ## Project setup
 ```
@@ -14,6 +22,4 @@ npm run serve
 ```
 npm run build
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+I didn't figure out how I can update the type of the todo (unfinished, finished, in-process) >_<
