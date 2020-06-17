@@ -11,7 +11,7 @@ const getters = {
 const actions = {
   addTodo({commit}, todo){
     // the first 'todos' is the module name :)
-    let todos = [...this.state.todos.todos ,todo];
+    let todos = [todo, ...this.state.todos.todos];
     window.localStorage.setItem('todos', JSON.stringify(todos))
     commit('add', todo);
   },
@@ -26,15 +26,15 @@ const actions = {
     commit('edit', newTodo);
   },
   dragEnd({commit}, draggedTodo){
+    console.log(draggedTodo, 555555555);
     let todos = this.state.todos.todos.map(todo => todo.id == draggedTodo.id ? {id: todo.id, todo: todo.todo, type: draggedTodo.type} : todo);
-    console.log(todos);
     window.localStorage.setItem('todos', JSON.stringify(todos));
     commit('updateType', draggedTodo);
   }
 };
 
 const mutations = {
-  add: (state, todo) => state.todos = [...state.todos, todo],
+  add: (state, todo) => state.todos = [todo, ...state.todos],
   remove: (state, id) => {
     state.todos = state.todos.filter(todo=> todo.id !== id)
   },

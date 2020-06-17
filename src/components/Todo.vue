@@ -1,5 +1,5 @@
 <template>
-  <div class="todo">
+  <div class="todo" :id="todo.id" @mouseenter="hovered()">
     <div>
       <input
         @blur="edited($event)"
@@ -35,6 +35,9 @@ export default {
       this.editTodo(newTodo);
       e.target.disabled = true;
       e.target.style.border = "none";
+    },
+    hovered(){
+      this.$emit('targetId', this.todo.id);
     }
   }
 }

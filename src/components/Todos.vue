@@ -2,13 +2,12 @@
   <div class="todos">
     <h2>{{todosTitle}}</h2>
     <div class="todos-container" :class="todosTitle" data-type="type">
-      <draggable class="list-group" group="todosTitle" ghost-class="ghost" @end="update($event)">
-
+      <AddTodo v-if="todosTitle === 'unfinished'" />
+      <draggable class="list-group" group="todos" ghost-class="ghost" @add="end">
         <div v-for="todo in todos" :key="todo.id" >
-          <Todo :todo="todo" />
+          <Todo :todo="todo" @targetId="changeTargetId"/>
         </div>
       </draggable>
-      <AddTodo v-if="todosTitle === 'unfinished'" />
     </div>
   </div>
 </template>
@@ -26,11 +25,27 @@ export default {
     draggable,
     AddTodo
   },
+  data(){
+    return{
+      targetId: null
+    }
+  },
+  computed:{
+    targetElementId(){
+      return this.targetId
+    }
+  },
   methods:{
     ...mapActions(["dragEnd"]),
-    update(e){
-      console.log(e);
-      // this.dragEnd()
+    end(){
+      console.log(this.targetElementId, this.targetId);
+      let updatedType = {type:this.type , id: this.targetElementId }
+      console.log(updatedType);
+      this.dragEnd(updatedType)
+    },
+    changeTargetId(id){
+      console.log(id);
+      this.targetId = id;
     }
   }
 }
@@ -62,7 +77,6 @@ h2{
 }
 .finished{
   background: #c5ffdb
-
 }
 @media (max-width: 1000px){
   .todos{
