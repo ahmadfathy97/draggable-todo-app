@@ -22,4 +22,3 @@ npm run serve
 ```
 npm run build
 ```
-I didn't figure out how I can update the type of the todo (unfinished, finished, in-process) >_<

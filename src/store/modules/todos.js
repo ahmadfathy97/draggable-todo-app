@@ -1,11 +1,13 @@
 const state = ()=> ({
-  todos: JSON.parse(window.localStorage.getItem('todos')) || []
+  todos: JSON.parse(window.localStorage.getItem('todos')) || [],
+  targetTodoId: null
 });
 
 const getters = {
-  inprocess: state => state.todos.filter(todo=> todo.type === 'inprocess'),
-  unfinished: state => state.todos.filter(todo=> todo.type === 'unfinished'),
-  finished: state => state.todos.filter(todo=> todo.type === 'finished')
+  inprocess: state => state.todos.length ? state.todos.filter(todo=> todo.type === 'inprocess') : [],
+  unfinished: state => state.todos.length ? state.todos.filter(todo=> todo.type === 'unfinished') : [],
+  finished: state => state.todos.length ? state.todos.filter(todo=> todo.type === 'finished') : [],
+  getTargetTodoId: state => state.targetTodoId,
 };
 
 const actions = {
@@ -26,10 +28,12 @@ const actions = {
     commit('edit', newTodo);
   },
   dragEnd({commit}, draggedTodo){
-    console.log(draggedTodo, 555555555);
     let todos = this.state.todos.todos.map(todo => todo.id == draggedTodo.id ? {id: todo.id, todo: todo.todo, type: draggedTodo.type} : todo);
     window.localStorage.setItem('todos', JSON.stringify(todos));
     commit('updateType', draggedTodo);
+  },
+  setTargetodoId({commit}, id){
+    commit('setID', id);
   }
 };
 
@@ -43,7 +47,8 @@ const mutations = {
   },
   updateType: (state, draggedTodo) => {
     state.todos = state.todos.map(todo => todo.id == draggedTodo.id ? {id: todo.id, todo: todo.todo, type: draggedTodo.type} : todo);
-  }
+  },
+  setID: (state, id) => {state.targetTodoId = id}
 };
 
 export default {
@@ -52,47 +57,3 @@ export default {
   actions,
   mutations
 };
-
-//
-// todos: [
-//   {
-//     id: 1,
-//     todo: "test1",
-//     type: "finished"
-//   },
-//   {
-//     id: 2,
-//     todo: "test2",
-//     type: "finished"
-//   },
-//   {
-//     id: 3,
-//     todo: "test3",
-//     type: "inprocess"
-//   },
-//   {
-//     id: 4,
-//     todo: "test4",
-//     type: "inprocess"
-//   },
-//   {
-//     id: 5,
-//     todo: "test5",
-//     type: "inprocess"
-//   },
-//   {
-//     id: 6,
-//     todo: "test6",
-//     type: "inprocess"
-//   },
-//   {
-//     id: 7,
-//     todo: "test7",
-//     type: "unfinished"
-//   },
-//   {
-//     id: 8,
-//     todo: "test8",
-//     type: "unfinished"
-//   }
-// ]

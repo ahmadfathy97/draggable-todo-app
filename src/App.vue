@@ -28,12 +28,19 @@ export default {
 body{
   background: #333
 }
+*::-webkit-scrollbar{
+  width: .6rem;
+}
+*::-webkit-scrollbar-thumb{
+  background: #0080ff;
+  border-radius: 10px;
+}
 h1{
   text-align: center;
   color: #eee;
 }
 .todos-lists{
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;

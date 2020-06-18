@@ -1,11 +1,11 @@
 <template>
   <div class="todos">
-    <h2>{{todosTitle}}</h2>
+    <h2 @click="clicked()">{{todosTitle}}</h2>
     <div class="todos-container" :class="todosTitle" data-type="type">
       <AddTodo v-if="todosTitle === 'unfinished'" />
       <draggable class="list-group" group="todos" ghost-class="ghost" @add="end">
         <div v-for="todo in todos" :key="todo.id" >
-          <Todo :todo="todo" @targetId="changeTargetId"/>
+          <Todo :todo="todo" />
         </div>
       </draggable>
     </div>
@@ -16,7 +16,7 @@
 import draggable from "vuedraggable";
 import Todo from './Todo.vue';
 import AddTodo from './AddTodo.vue';
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 export default {
   name: 'Todos',
   props:["todos", "todosTitle", "type"],
@@ -25,27 +25,12 @@ export default {
     draggable,
     AddTodo
   },
-  data(){
-    return{
-      targetId: null
-    }
-  },
-  computed:{
-    targetElementId(){
-      return this.targetId
-    }
-  },
+  computed: mapGetters(["getTargetTodoId"]),
   methods:{
     ...mapActions(["dragEnd"]),
     end(){
-      console.log(this.targetElementId, this.targetId);
-      let updatedType = {type:this.type , id: this.targetElementId }
-      console.log(updatedType);
+      let updatedType = {type:this.type , id: this.getTargetTodoId }
       this.dragEnd(updatedType)
-    },
-    changeTargetId(id){
-      console.log(id);
-      this.targetId = id;
     }
   }
 }

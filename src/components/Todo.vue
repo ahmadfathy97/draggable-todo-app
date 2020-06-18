@@ -1,12 +1,13 @@
 <template>
   <div class="todo" :id="todo.id" @mouseenter="hovered()">
     <div>
-      <input
+      <textarea
         @blur="edited($event)"
-        :value="todo.todo"
         disabled
         ref="todoName"
-      />
+      >
+      {{todo.todo}}
+      </textarea>
       <span @click="makeItEdatable($event)">Edit</span>
       <span title="double click to Delete" @click="remove(todo.id)">X</span>
     </div>
@@ -19,14 +20,13 @@ export default {
   name: 'Todo',
   props:["todo"],
   methods: {
-    ...mapActions(["removeTodo", "editTodo"]),
+    ...mapActions(["removeTodo", "editTodo", "setTargetodoId"]),
     remove(id){
-      console.log(id);
       this.removeTodo(id)
     },
     makeItEdatable(e){
       this.$refs.todoName.disabled = false;
-      this.$refs.todoName.style.border = "2px dashed #0080aa"
+      this.$refs.todoName.style.border = "1px dashed #0080aa"
 
     },
     edited(e){
@@ -37,7 +37,7 @@ export default {
       e.target.style.border = "none";
     },
     hovered(){
-      this.$emit('targetId', this.todo.id);
+      this.setTargetodoId(this.todo.id);
     }
   }
 }
@@ -58,7 +58,7 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.todo div input{
+.todo div textarea{
   outline: none;
   border: 0;
   width: 90%;
@@ -68,7 +68,9 @@ export default {
   word-break: break-all;
   overflow: hidden;
   cursor: grab;
-
+  resize: none;
+  max-height: 40px;
+  overflow-y: auto;
 }
 .todo div span{
   display: inline-flex;
